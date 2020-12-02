@@ -9,7 +9,7 @@ const formChecked = document.querySelectorAll('.form-check-input')
 const addTaskButton = document.querySelector('#add_task_submit')
 const taskList = document.querySelector('#currentTasks')
 addTaskButton.addEventListener('click', submitForm)
-
+const completedTasks = document.querySelector('#completedTasks')
 
 
 function submitForm() {
@@ -41,6 +41,8 @@ function submitForm() {
 
 
 function taskLoop() {
+    completedTasks.innerHTML = ''
+    taskList.innerHTML = ''
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
         let taskObj = JSON.parse(localStorage.getItem(key))
@@ -86,29 +88,42 @@ function taskGenerator(taskObj, key) {
 						</button>
 						<div class="dropdown-menu p-2 flex-column" aria-labelledby="dropdownMenuItem1">
 							<button type="button" class="btn btn-success w-100">Complete</button>
-							<button type="button" class="btn btn-info w-100 my-2">Edit</button>
+							<button type="button" class="btn btn-info w-100 my-2" data-toggle="modal" data-target="#exampleModal">Edit</button>
 							<button type="button" class="btn btn-danger w-100">Delete</button>
 						</div>
 					</div>
 				</li>`
-    taskList.innerHTML += taskCard
+    if (taskObj.complete) {
+        completedTasks.innerHTML += taskCard
+
+    } else {
+        taskList.innerHTML += taskCard
+    }
+
     taskOptions(taskCard, key)
+
 }
 
 
 function taskOptions(item, key) {
-    console.log(localStorage.getItem(key))
     let successBtn = document.querySelectorAll('.dropdown > .dropdown-menu > .btn-success')
     let deleteBtn = document.querySelector('.dropdown > .dropdown-menu > .btn-info')
     let editBtn = document.querySelector('.dropdown > .dropdown-menu > .btn-danger')
-    successBtn.forEach((item)=> item.addEventListener('click',()=>{completeTask(key)} ))
+    successBtn.forEach((item) => item.addEventListener('click', completeTask))
 
-    const completeTask = (key)=>{
-        console.log(localStorage.getItem(key))
-    }
 
 }
 
+function completeTask() {
+    let task = JSON.parse(localStorage.getItem(this.closest('.list-group-item').id))
+    let idTask = this.closest('.list-group-item').id
+    task.complete = !task.complete
+    localStorage.setItem(idTask, JSON.stringify(task))
+    taskLoop()
+    //console.log(JSON.parse(localStorage.getItem(this.closest('.list-group-item').id)).complete)
+
+
+}
 
 taskLoop()
 
