@@ -70,6 +70,9 @@ function taskGenerator(taskObj, key) {
     if (month < 10) {
         month = "0" + month
     }
+    if (minutes < 10) {
+        minutes = "0" + minutes
+    }
     let taskCard = `<li class="list-group-item d-flex w-100 mb-2" id=${key} >
 					<div class="w-100 mr-2">
 						<div class="d-flex w-100 justify-content-between">
