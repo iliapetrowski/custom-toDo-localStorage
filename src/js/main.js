@@ -8,15 +8,14 @@ const inputText = document.querySelector('#inputText')
 const formChecked = document.querySelectorAll('.form-check-input')
 const addTaskButton = document.querySelector('#add_task_submit')
 const taskList = document.querySelector('#currentTasks')
-
-
 addTaskButton.addEventListener('click', submitForm)
 
 
-function submitForm(e) {
 
-    let date = new Date()
+function submitForm() {
     let key = new Date().getTime().toString()
+    let date = new Date()
+
 
     let newTask = {
         priority: null,
@@ -45,22 +44,31 @@ function taskLoop() {
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
         let taskObj = JSON.parse(localStorage.getItem(key))
-        taskGenerator(taskObj)
+        taskGenerator(taskObj, key)
     }
 
 }
 
 
-function taskGenerator(taskObj) {
+function taskGenerator(taskObj, key) {
 
     let hour = taskObj.hour
     let minutes = taskObj.minutes
-    let day = taskObj.day -1
+    let day = taskObj.day - 1
     let month = taskObj.month
     let year = taskObj.year
-    console.log(taskObj)
 
-    taskList.innerHTML += `<li class="list-group-item d-flex w-100 mb-2">
+
+    if (hour < 10) {
+        hour = "0" + hour
+    }
+    if (day < 10) {
+        day = "0" + day
+    }
+    if (month < 10) {
+        month = "0" + month
+    }
+    let taskCard = `<li class="list-group-item d-flex w-100 mb-2" id=${key} >
 					<div class="w-100 mr-2">
 						<div class="d-flex w-100 justify-content-between">
 							<h5 class="mb-1">${taskObj.title}</h5>
@@ -83,7 +91,24 @@ function taskGenerator(taskObj) {
 						</div>
 					</div>
 				</li>`
+    taskList.innerHTML += taskCard
+    taskOptions(taskCard, key)
 }
+
+
+function taskOptions(item, key) {
+    console.log(localStorage.getItem(key))
+    let successBtn = document.querySelectorAll('.dropdown > .dropdown-menu > .btn-success')
+    let deleteBtn = document.querySelector('.dropdown > .dropdown-menu > .btn-info')
+    let editBtn = document.querySelector('.dropdown > .dropdown-menu > .btn-danger')
+    successBtn.forEach((item)=> item.addEventListener('click',()=>{completeTask(key)} ))
+
+    const completeTask = (key)=>{
+        console.log(localStorage.getItem(key))
+    }
+
+}
+
 
 taskLoop()
 
