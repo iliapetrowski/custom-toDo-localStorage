@@ -103,16 +103,19 @@ function taskGenerator(taskObj, key) {
         taskList.innerHTML += taskCard
     }
 
-    taskOptions(taskCard, key)
+    taskOptions(taskCard, key, taskObj)
 
 }
 
 
-function taskOptions(item, key) {
+function taskOptions(item, key, taskObj) {
     let successBtn = document.querySelectorAll('.dropdown > .dropdown-menu > .btn-success')
-    let deleteBtn = document.querySelector('.dropdown > .dropdown-menu > .btn-info')
-    let editBtn = document.querySelector('.dropdown > .dropdown-menu > .btn-danger')
+    let deleteBtn = document.querySelectorAll('.dropdown > .dropdown-menu > .btn-danger')
+    let editBtn = document.querySelectorAll('.dropdown > .dropdown-menu > .btn-info')
     successBtn.forEach((item) => item.addEventListener('click', completeTask))
+    editBtn.forEach((item) => item.addEventListener('click', () => {
+        editTask.bind(item)()
+    }))
 
 
 }
@@ -125,6 +128,24 @@ function completeTask() {
     taskLoop()
     //console.log(JSON.parse(localStorage.getItem(this.closest('.list-group-item').id)).complete)
 
+
+}
+
+
+function editTask() {
+
+    let id = this.closest('.list-group-item').id
+    let taskItem = JSON.parse(localStorage.getItem(id))
+    inputTitle.value = taskItem.title
+    inputText.value = taskItem.text
+
+    formChecked.forEach((item, index) => {
+        if (item.checked) {
+            formChecked.value = item.checked
+        }
+
+    })
+    console.log(taskItem)
 
 }
 
