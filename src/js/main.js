@@ -31,7 +31,7 @@ function submitForm() {
     }
     formChecked.forEach((item, index) => {
         if (item.checked) {
-            newTask.priority = formChecked[index].value
+            newTask.priority = index
         }
 
     })
@@ -78,7 +78,7 @@ function taskGenerator(taskObj, key) {
 						<div class="d-flex w-100 justify-content-between">
 							<h5 class="mb-1">${taskObj.title}</h5>
 							<div>
-								<small class="mr-2">${taskObj.priority} priority</small>
+								<small class="mr-2">${formChecked[taskObj.priority].value} priority</small>
 								<small>${hour}:${minutes}  ${day}.${month}.${year} </small>
 							</div>
 
